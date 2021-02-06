@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=development node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/izwerg/raspileleki/issues"
   },
-  "homepage": "https://github.com/izwerg/raspileleki#readme"
+  "homepage": "https://github.com/izwerg/raspileleki#readme",
+  "dependencies": {
+    "pino": "6.11.0",
+    "pino-pretty": "4.5.0",
+    "rxjs": "6.6.3"
+  }
 }
