@@ -1,0 +1,20 @@
+{
+  "name": "raspileleki",
+  "version": "1.0.0",
+  "description": "Raspberry Pi Leleki",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/izwerg/raspileleki.git"
+  },
+  "author": "Andrew Trubchanin <andrew.trubchanin@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/izwerg/raspileleki/issues"
+  },
+  "homepage": "https://github.com/izwerg/raspileleki#readme"
+}
