@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 
 export class Ds18b20 {
   constructor(id) {
+    this.id = id;
   }
 
   async read() {
