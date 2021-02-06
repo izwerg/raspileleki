@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import { interval } from 'rxjs';
-import { exhaustMap } from 'rxjs/operators/index.js';
+import { exhaustMap, share } from 'rxjs/operators/index.js';
 
 import { config } from '../config.js';
 
@@ -17,6 +17,9 @@ export class Ds18b20 {
 
   get temperature$() {
     return interval(config.ds18b20Interval)
-    .pipe(exhaustMap(_ => this.read()));
+    .pipe(
+      exhaustMap(_ => this.read()),
+      share(),
+    );
   }
 }
