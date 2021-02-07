@@ -7,11 +7,12 @@ let bus;
 export async function openBus(busNumber = 1) {
   if (bus) return bus;
 
-  const regMocks = { 0x00: 0xff };
+  const regMocks = { 0x00: 0xff, 0x09: 0x00 };
 
   bus = { // i2c-bus mock
     readByte: async (address, register) => regMocks[register],
     writeByte: async (address, register, value) => { regMocks[register] = value; },
+    close: async () => null,
   };
 
   if (arch() === 'arm') { // raspberrypi

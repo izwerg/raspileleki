@@ -28,14 +28,23 @@ async function main() {
   .pipe(takeUntil(destroyed$))
   .subscribe(arr => {
     const [temp, state] = arr;
-    logger.info(`t=${temp}, s=${state}`);
+    // logger.info(`t=${temp}, s=${state}`);
+    if (state) {
+      if (temp >= config.tempMax) {
+        await relay.write(false);
+      }
+    } else {
+      if (temp <= config.tempMin) {
+        await relay.write(true);
+      }
+    }
   })
 
-  // sensor.temperature$
-//   .pipe(takeUntil(destroyed$))
-//   .subscribe(temp => {
-//     logger.info(`TEMP ${temp}`);
-//   });
+  sensor.temperature$
+  .pipe(takeUntil(destroyed$))
+  .subscribe(temp => {
+    logger.info(`TEMP ${temp}`);
+  });
 
 // relay.state$
 //   .pipe(takeUntil(destroyed$))
