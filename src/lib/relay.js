@@ -27,13 +27,13 @@ export class Relay {
     await this.init();
     const data = await this.bus.readByte(this.address, GPIO);
     logger.debug(`Relay[${this.index}].read: 0x${data.toString(16)} -> ${!(data & this.mask)}.`);
-    return !(data & this.mask);
+    return data & this.mask;
   }
 
   async write(state) {
     await this.init();
     const data = await this.bus.readByte(this.address, GPIO);
-    const value = state ? data & ~this.mask : data | this.mask;
+    const value = state ? data | this.mask : data & ~this.mask;
     await this.bus.writeByte(this.address, GPIO, value);
     logger.debug(`Relay[${this.index}].write: 0x${value.toString(16)} -> ${state}`);
   }

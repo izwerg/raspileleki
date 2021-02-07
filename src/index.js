@@ -14,6 +14,8 @@ process
   .on('SIGINT', () => destroy())
   .on('uncaughtException', (err) => (logger.error(err), destroy(1)));
 
+const destroyed$ = new Subject();
+
 function destroy(status = 0) {
   destroyed$.next();
   destroyed$.complete();
@@ -22,8 +24,6 @@ function destroy(status = 0) {
   
 async function main() {
   logger.info('Process started.')
-
-  const destroyed$ = new Subject();
 
   const bus = await openBus();
 
