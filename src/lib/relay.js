@@ -18,23 +18,23 @@ export class Relay {
 
   async init() {
     if (this.initialized) return;
-    const data = await bus.readByte(this.address, IODIR);
-    await bus.writeByte(this.address, IODIR, data & ~this.mask);
+    const data = await this.bus.readByte(this.address, IODIR);
+    await this.bus.writeByte(this.address, IODIR, data & ~this.mask);
     this.initialized = true;
   }
 
   async read() {
     await this.init();
-    const data = await bus.readByte(this.address, GPIO);
+    const data = await this.bus.readByte(this.address, GPIO);
     logger.debug(`Relay[${this.index}].read: 0x${data.toString(16)} -> ${!(data & this.mask)}.`);
     return !(data & this.mask);
   }
 
   async write(state) {
     await this.init();
-    const data = await bus.readByte(this.address, GPIO);
+    const data = await this.bus.readByte(this.address, GPIO);
     const value = state ? data & ~this.mask : data | this.mask;
-    await bus.writeByte(this.address, GPIO, value);
+    await this.bus.writeByte(this.address, GPIO, value);
     logger.debug(`Relay[${this.index}].write: 0x${value.toString(16)} -> ${state}`);
   }
 
