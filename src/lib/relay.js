@@ -26,7 +26,7 @@ export class Relay {
   async read() {
     await this.init();
     const data = await this.bus.readByte(this.address, GPIO);
-    logger.debug(`Relay[${this.index}].read: 0x${data.toString(16)} -> ${!(data & this.mask)}.`);
+    logger.debug(`Relay[${this.index}].read: 0x${data.toString(16)} -> ${data & this.mask}.`);
     return data & this.mask;
   }
 
