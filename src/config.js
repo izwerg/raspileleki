@@ -7,5 +7,5 @@ export const config = {
   ds18b20Interval: 1000,
   ds18b20Path: dev ? './src/stubs/ds18b20' : '/sys/bus/w1/devices/${id}/temperature',
 
-  relays: [0x270000, 0x270001, 0x270002, 0x270003], // address + register + index
+  relays: [0x2700, 0x2701, 0x2702, 0x2703], // address + index
 };
