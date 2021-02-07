@@ -3,6 +3,7 @@ import { interval } from 'rxjs';
 import { exhaustMap, share } from 'rxjs/operators/index.js';
 
 import { config } from '../config.js';
+import { logger } from './logger.js';
 
 export class Ds18b20 {
   constructor(id) {
@@ -12,6 +13,7 @@ export class Ds18b20 {
 
   async read() {
     const data = await fs.readFile(this.path, { encoding: 'utf8' });
+    logger.debug(`Ds18b20.read: ${data}.`);
     return parseInt(data) / 1000;
   }
 

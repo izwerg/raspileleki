@@ -1,6 +1,9 @@
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators/index.js';
+
 import { logger } from './lib/logger.js'
+import { config } from './config.js';
+
 import { Ds18b20 } from './lib/ds18b20.js';
 import { Relay } from './lib/relay.js';
 
@@ -13,8 +16,8 @@ logger.info('Process started.')
 
 const destroyed$ = new Subject();
 
-const sensor = new Ds18b20('28-3c01d607e06a'); // TODO: config
-const relay = new Relay(0x27, 0x00, 0x01); // TODO: config
+const sensor = new Ds18b20(config.ds18b20Id);
+const relay = new Relay(config.relays[0]);
 
 // sensor.temperature$
 //   .pipe(takeUntil(destroyed$))

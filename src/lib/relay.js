@@ -4,24 +4,29 @@ import { distinct, exhaustMap, share } from 'rxjs/operators/index.js';
 
 import { config } from '../config.js';
 import { openBus } from './i2c.js';
+import { logger } from './logger.js';
 
 export class Relay {
-  constructor(address, register, mask) {
-    this.address = address;
-    this.register = register;
-    this.mask = mask;
+  constructor(id) {
+    this.address = (id >> 16) & 0xff;
+    this.register = (id >> 8) & 0xff;
+    this.index = id & 0xff;
+    this.mask = 1 << this.index;
   }
 
   async read() {
     const bus = await openBus();
     const data = await bus.readByte(this.address, this.register);
-    return !!(data & this.mask);
+    logger.debug(`Relay[${this.index}].read: 0x${data.toString(16)} -> ${!(data & this.mask)}.`);
+    return !(data & this.mask);
   }
 
   async write(state) {
     const bus = await openBus();
     const data = await bus.readByte(this.address, this.register);
-    await bus.writeByte(this.address, this.register, state ? data | this.mask : data & ~this.mask);
+    const value = state ? data & ~this.mask : data | this.mask;
+    await bus.writeByte(this.address, this.register, value);
+    logger.debug(`Relay[${this.index}].write: 0x${value.toString(16)} -> ${state}`);
   }
 
   state$ = interval(config.relayInterval)
