@@ -6,7 +6,7 @@ import { config } from './config.js';
 
 import { Ds18b20 } from './lib/ds18b20.js';
 
-import { openBus } from './i2c.js';
+import { openBus } from './lib/i2c.js';
 import { Relay } from './lib/relay.js';
 
 process
