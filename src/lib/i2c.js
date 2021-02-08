@@ -2,16 +2,16 @@ import { arch } from 'os';
 
 import { logger } from './logger.js';
 
-let bus;
+const busMock = {
+  0x27: [0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+};
 
 export async function openBus(busNumber = 1) {
-  if (bus) return bus;
-
-  const regMocks = { 0x00: 0xff, 0x09: 0x00 };
-
-  bus = { // i2c-bus mock
-    readByte: async (address, register) => regMocks[register],
-    writeByte: async (address, register, value) => { regMocks[register] = value; },
+  let bus = { // i2c-bus mock
+    readByte: async (address, register) => busMock[address][register],
+    writeByte: async (address, register, value) => { busMock[address][register] = value; },
+    i2cRead: async (address, length, buffer) => { for (let i = 0; i < length; i++) { buffer[i] = busMock[address][i]; } },
+    i2cWrite: async (address, length, buffer) => { for (let i = 0; i < length; i++) { busMock[address][i] = buffer[i]; } },
     close: async () => null,
   };
 
