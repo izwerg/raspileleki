@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import { interval as rxInterval } from 'rxjs';
-import { exhaustMap, share } from 'rxjs/operators/index.js';
+import { distinctUntilChanged, exhaustMap, share } from 'rxjs/operators/index.js';
 
 import { config } from '../config.js';
 import { logger } from '../lib/logger.js';
@@ -14,6 +14,7 @@ export class Ds18b20 {
     this.temperature$ = rxInterval(this.interval)
       .pipe(
         exhaustMap(_ => this.read()),
+        distinctUntilChanged(),
         share(),
       );
   }

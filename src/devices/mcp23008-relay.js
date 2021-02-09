@@ -1,5 +1,5 @@
 import { interval as rxInterval } from 'rxjs';
-import { distinct, exhaustMap, share } from 'rxjs/operators/index.js';
+import { distinctUntilChanged, exhaustMap, share } from 'rxjs/operators/index.js';
 
 import { openBus } from '../lib/i2c.js';
 
@@ -16,7 +16,7 @@ export class Mcp23008Relay {
     this.state$ = rxInterval(this.interval)
       .pipe(
         exhaustMap(() => this.read()),
-        distinct(),
+        distinctUntilChanged(),
         share(),
       );
   }
