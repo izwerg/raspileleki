@@ -8,9 +8,9 @@ import devices from './devices/index.js';
 
 async function main() {
   process
-  .on('SIGTERM', () => destroy())
-  .on('SIGINT', () => destroy())
-  .on('uncaughtException', (err) => (logger.error(err), destroy(1)));
+    .on('SIGTERM', () => destroy())
+    .on('SIGINT', () => destroy())
+    .on('uncaughtException', (err) => (logger.error(err), destroy(1)));
 
   const destroyed$ = new Subject();
 
@@ -20,21 +20,18 @@ async function main() {
   const tempRelay = new devices[config.tempRelay.type](config.tempRelay);
 
   combineLatest([tempSensor.temperature$, tempRelay.state$])
-  .pipe(takeUntil(destroyed$))
-  .pipe(concatMap(async arr => {
-    const [temp, state] = arr;
-    logger.info(`t=${temp}, s=${state}`);
-    if (state) {
-      if (temp >= config.tempMax) {
+    .pipe(takeUntil(destroyed$))
+    .pipe(concatMap(async arr => {
+      const [temp, state] = arr;
+      if (temp >= config.tempMax && state) {
         await tempRelay.write(false);
-      }
-    } else {
-      if (temp <= config.tempMin) {
+        logger.info(`Heating OFF (t=${temp})`);
+      } else if (temp <= config.tempMin && !state) {
         await tempRelay.write(true);
+        logger.info(`Heating ON (t=${temp})`);
       }
-    }
-  }))
-  .subscribe();
+    }))
+    .subscribe();
 
   function destroy(status = 0) {
     destroyed$.next();
