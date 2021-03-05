@@ -2,10 +2,12 @@ const dev = process.env.NODE_ENV === 'development';
 
 export const config = {
   debug: true,
-  ds18b20Path: dev ? './src/stubs/ds18b20' : '/sys/bus/w1/devices/${id}/temperature',
 
-  tempSensor: { type: 'Ds18b20', id: '28-3c01d607e06a', r: 1000 },
-  tempRelay: { type: 'Mcp23008Relay', id: 0x2700, interval: 1000 },
-  tempMin: 27,
-  tempMax: 27.5,
+  tempSensor: { type: 'HDC1080', id: 0x4000, interval: 5000 },
+  tempRelay: { type: 'MCP23008Relay', id: 0x2700, interval: 5000 },
+  humidSensor: { type: 'HDC1080', id: 0x4001, interval: 5000 },
+  tempMin: 27.0,
+  tempMax: 27.3,
+
+  sensorsPath: `/run/user/1000/raspileleki-sensors.json`,
 };

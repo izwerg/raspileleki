@@ -1,4 +1,8 @@
-import { Ds18b20 } from './ds18b20.js';
-import { Mcp23008Relay } from './mcp23008-relay.js';
+import { MCP23008Relay } from './mcp23008-relay.js';
+import { HDC1080 } from './hdc1080.js';
 
-export default { Ds18b20, Mcp23008Relay };
+const devices = { MCP23008Relay, HDC1080 };
+
+export function createDevice(cfg) {
+  return new devices[cfg.type](cfg);
+}
